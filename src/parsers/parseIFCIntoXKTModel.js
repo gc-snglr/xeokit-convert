@@ -293,10 +293,12 @@ function parseRelatedItemsOfType(ctx, id, relation, related, type, parentMetaObj
             } else {
 
                 element.forEach((element2) => {
+                    if(element2 !== null) {
 
-                    const ifcElement = ctx.ifcAPI.GetLine(ctx.modelID, element2.value);
-
-                    parseSpatialChildren(ctx, ifcElement, parentMetaObjectId);
+                        const ifcElement = ctx.ifcAPI.GetLine(ctx.modelID, element2.value);
+    
+                        parseSpatialChildren(ctx, ifcElement, parentMetaObjectId);
+                    }
                 });
             }
         }
