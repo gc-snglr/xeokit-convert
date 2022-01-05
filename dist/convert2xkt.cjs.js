@@ -48471,7 +48471,7 @@ var IfcAPI2 = class {
       let property = line[propertyName];
       if (property && property.type === 5) {
         line[propertyName] = this.GetLine(modelID, property.value, true);
-      } else if (Array.isArray(property) && property.length > 0 && property[0].type === 5) {
+      } else if (Array.isArray(property) && property.length > 0 && property[0] !== null && property[0].type === 5) {
         for (let i = 0; i < property.length; i++) {
           line[propertyName][i] = this.GetLine(modelID, property[i].value, true);
         }
@@ -48714,7 +48714,7 @@ function parsePropertySets(ctx) {
             if (relatedObjects) {
                 for (let i = 0, len = relatedObjects.length; i < len; i++) {
                     const relatedObject = relatedObjects[i];
-                    const metaObjectId = relatedObject.GlobalId.value;
+                    const metaObjectId = relatedObject?.GlobalId?.value;
                     const metaObject = ctx.xktModel.metaObjects[metaObjectId];
                     if (metaObject) {
                         if (!metaObject.propertySetIds) {
