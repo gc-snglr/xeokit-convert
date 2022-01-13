@@ -165,7 +165,7 @@ function parsePropertySets(ctx) {
             if (relatedObjects) {
                 for (let i = 0, len = relatedObjects.length; i < len; i++) {
                     const relatedObject = relatedObjects[i];
-                    const metaObjectId = relatedObject.GlobalId.value;
+                    const metaObjectId = relatedObject?.GlobalId?.value;
                     const metaObject = ctx.xktModel.metaObjects[metaObjectId];
                     if (metaObject) {
                         if (!metaObject.propertySetIds) {
@@ -293,8 +293,7 @@ function parseRelatedItemsOfType(ctx, id, relation, related, type, parentMetaObj
             } else {
 
                 element.forEach((element2) => {
-                    if(element2 !== null) {
-
+                    if(element2) {
                         const ifcElement = ctx.ifcAPI.GetLine(ctx.modelID, element2.value);
     
                         parseSpatialChildren(ctx, ifcElement, parentMetaObjectId);
