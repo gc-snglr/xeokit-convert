@@ -133,13 +133,14 @@ Usage: convert2xkt [options]
 
 Options:
 
-    -v, --version           output the version number of xeokit-convert
+    -v, --version           output the version number
     -s, --source [file]     path to source file
-    -f, --format [string]   source file format (optional); supported formats are gltf, ifc, laz, las, stl and cityjson
+    -f, --format [string]   source file format (optional); supported formats are gltf, ifc, laz, las, pcd, ply, stl and cityjson
     -m, --metamodel [file]  path to source metamodel JSON file (optional)
     -i, --include [types]   only convert these types (optional)
     -x, --exclude [types]   never convert these types (optional)
     -r, --rotatex           rotate model 90 degrees about X axis (for las and cityjson)
+    -g, --disablegeoreuse   disable geometry reuse (for ifc and gltf)
     -o, --output [file]     path to target .xkt file; creates directories on path automatically if not existing
     -l, --log               enable logging
     -h, --help              output usage information
@@ -579,7 +580,7 @@ const viewer = new Viewer({
 
 const xktLoader = new XKTLoaderPlugin(viewer);
 
-utils.loadArraybuffer("./models/ifc/rac_advanced_sample_project.ifc", async (data) => {
+utils.loadArraybuffer("./assets/models/ifc/rac_advanced_sample_project.ifc", async (data) => {
 
           const xktModel = new XKTModel();
 
@@ -621,7 +622,7 @@ const viewer = new Viewer({
 
 const xktLoader = new XKTLoaderPlugin(viewer);
 
-utils.loadArraybuffer("./models/laz/indoor.0.1.laz", async (data) => {
+utils.loadArraybuffer("./assets/models/laz/indoor.0.1.laz", async (data) => {
 
           const xktModel = new XKTModel();
 
@@ -663,11 +664,11 @@ const viewer = new Viewer({
 
 const xktLoader = new XKTLoaderPlugin(viewer);
 
-utils.loadJSON("./models/gltf/MAP/MAP.gltf", (json) => {
+utils.loadArraybuffer("./assets/models/gltf/MAP/glTF-Embedded/MAP.gltf", (gltf) => {
 
           const xktModel = new XKTModel();
 
-          parseGLTFIntoXKTModel({data: json, xktModel: xktModel}).then(() => {
+          parseGLTFIntoXKTModel({data: gltf, xktModel: xktModel}).then(() => {
 
             xktModel.finalize();
 
@@ -704,7 +705,7 @@ const viewer = new Viewer({
 
 const xktLoader = new XKTLoaderPlugin(viewer);
 
-utils.loadJSON("./models/stl/binary/spurGear.stl", (json) => {
+utils.loadJSON("./assets/models/stl/binary/spurGear.stl", (json) => {
 
           const xktModel = new XKTModel();
 

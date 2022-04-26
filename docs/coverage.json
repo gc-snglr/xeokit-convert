@@ -1,7 +1,7 @@
 {
-  "coverage": "38.19%",
-  "expectCount": 343,
-  "actualCount": 131,
+  "coverage": "37.39%",
+  "expectCount": 353,
+  "actualCount": 132,
   "files": {
     "src/XKTModel/KDNode.js": {
       "expectCount": 6,
@@ -55,15 +55,15 @@
         22,
         24,
         372,
-        743,
-        777,
-        799,
-        841,
-        860,
-        928,
-        932,
-        1021,
-        1066
+        746,
+        780,
+        802,
+        844,
+        863,
+        931,
+        935,
+        1024,
+        1069
       ]
     },
     "src/XKTModel/XKTPropertySet.js": {
@@ -197,7 +197,7 @@
       "expectCount": 2,
       "actualCount": 1,
       "undocumentLines": [
-        329
+        331
       ]
     },
     "src/geometryBuilders/buildBoxGeometry.js": {
@@ -376,40 +376,55 @@
         5,
         6,
         7,
-        134,
-        151,
-        164,
-        242,
-        286,
-        390,
-        462,
-        517,
-        544,
-        561
+        130,
+        143,
+        156,
+        234,
+        278,
+        382,
+        454,
+        509,
+        536,
+        553
       ]
     },
     "src/parsers/parseGLTFIntoXKTModel.js": {
-      "expectCount": 19,
+      "expectCount": 20,
       "actualCount": 1,
       "undocumentLines": [
         4,
         6,
         15,
-        120,
         131,
-        147,
-        176,
-        185,
-        193,
-        202,
-        213,
-        277,
-        287,
-        300,
-        302,
-        448,
-        466,
-        523
+        168,
+        179,
+        205,
+        234,
+        243,
+        251,
+        260,
+        271,
+        335,
+        345,
+        358,
+        360,
+        543,
+        566,
+        625
+      ]
+    },
+    "src/parsers/parseGLTFIntoXKTModel2.js": {
+      "expectCount": 9,
+      "actualCount": 1,
+      "undocumentLines": [
+        101,
+        138,
+        150,
+        210,
+        220,
+        235,
+        253,
+        255
       ]
     },
     "src/parsers/parseIFCIntoXKTModel.js": {
@@ -428,9 +443,9 @@
       "expectCount": 4,
       "actualCount": 1,
       "undocumentLines": [
-        167,
-        181,
-        196
+        178,
+        192,
+        207
       ]
     },
     "src/parsers/parseMetaModelIntoXKTModel.js": {

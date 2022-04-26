@@ -14,6 +14,7 @@ function parseMetaModelIntoXKTModel({metaModelData, xktModel, includeTypes, excl
     return new Promise(function (resolve, reject) {
 
         const metaObjects = metaModelData.metaObjects || [];
+        const propertySets = metaModelData.propertySets || [];
 
         xktModel.modelId = metaModelData.revisionId || ""; // HACK
         xktModel.projectId = metaModelData.projectId || "";
@@ -22,7 +23,19 @@ function parseMetaModelIntoXKTModel({metaModelData, xktModel, includeTypes, excl
         xktModel.createdAt = metaModelData.createdAt || "";
         xktModel.creatingApplication = metaModelData.creatingApplication || "";
         xktModel.schema = metaModelData.schema || "";
+        
+        for (let i = 0, len = propertySets.length; i < len; i++) {
 
+            const propertySet = propertySets[i];
+            
+            xktModel.createPropertySet({
+                propertySetId: propertySet.id,
+                propertySetName: propertySet.name,
+                propertySetType: propertySet.type,
+                properties: propertySet.properties
+            });
+        }
+        
         let includeTypesMap;
         if (includeTypes) {
             includeTypesMap = {};
@@ -37,6 +50,13 @@ function parseMetaModelIntoXKTModel({metaModelData, xktModel, includeTypes, excl
             for (let i = 0, len = excludeTypes.length; i < len; i++) {
                 excludeTypesMap[excludeTypes[i]] = true;
             }
+        }
+
+        const metaObjectsMap = {};
+
+        for (let i = 0, len = metaObjects.length; i < len; i++) {
+            const newObject = metaObjects[i];
+            metaObjectsMap[newObject.id] = newObject;
         }
 
         let countMetaObjects = 0;
@@ -54,11 +74,19 @@ function parseMetaModelIntoXKTModel({metaModelData, xktModel, includeTypes, excl
                 continue;
             }
 
+            if (metaObject.parent !== undefined && metaObject.parent !== null) {
+                const metaObjectParent = metaObjectsMap[metaObject.parent];
+                if (metaObject.type === metaObjectParent.type) { // Don't create redundant sub-objects
+                   continue
+                }
+            }
+
             xktModel.createMetaObject({
                 metaObjectId: metaObject.id,
                 metaObjectType: metaObject.type,
                 metaObjectName: metaObject.name,
-                parentMetaObjectId: metaObject.parent
+                parentMetaObjectId: metaObject.parent,
+                propertySetIds: metaObject.propertySetIds || metaObject.propertySetId ? [metaObject.propertySetId] : null
             });
 
             countMetaObjects++;

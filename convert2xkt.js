@@ -17,6 +17,7 @@ program
     .option('-i, --include [types]', 'only convert these types (optional)')
     .option('-x, --exclude [types]', 'never convert these types (optional)')
     .option('-r, --rotatex', 'rotate model 90 degrees about X axis (for las and cityjson)')
+    .option('-g, --disablegeoreuse', 'disable geometry reuse (for ifc and gltf)')
     .option('-o, --output [file]', 'path to target .xkt file; creates directories on path automatically if not existing')
     .option('-l, --log', 'enable logging');
 
@@ -28,13 +29,13 @@ program.parse(process.argv);
 
 const options = program.opts();
 
-if (program.source === undefined) {
+if (options.source === undefined) {
     console.error('Error: please specify source file path.');
     program.help();
     process.exit(1);
 }
 
-if (program.output === undefined) {
+if (options.output === undefined) {
     console.error('Error: please specify target xkt file path.');
     program.help();
     process.exit(1);
@@ -48,21 +49,22 @@ function log(msg) {
 
 async function main() {
 
-    if (program.output) {
-        const outputDir = getBasePath(program.output).trim();
+    if (options.output) {
+        const outputDir = getBasePath(options.output).trim();
         if (outputDir !== "" && !fs.existsSync(outputDir)) {
             fs.mkdirSync(outputDir, {recursive: true});
         }
     }
 
     const result = await convert2xkt({
-        source: program.source,
-        format: program.format,
-        metaModelSource: program.metamodel,
-        output: program.output,
-        includeTypes: program.include ? program.include.slice(",") : null,
-        excludeTypes: program.exclude ? program.exclude.slice(",") : null,
+        source: options.source,
+        format: options.format,
+        metaModelSource: options.metamodel,
+        output: options.output,
+        includeTypes: options.include ? options.include.slice(",") : null,
+        excludeTypes: options.exclude ? options.exclude.slice(",") : null,
         rotateX: options.rotatex,
+        reuseGeometries: (options.disablegeoreuse !== true),
         log
     });
 

@@ -50,6 +50,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parsers">parsers</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parse3DXMLIntoXKTModel">parse3DXMLIntoXKTModel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseCityJSONIntoXKTModel">parseCityJSONIntoXKTModel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseGLTFIntoXKTModel">parseGLTFIntoXKTModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseGLTFIntoXKTModel2">parseGLTFIntoXKTModel2</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseIFCIntoXKTModel">parseIFCIntoXKTModel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseLASIntoXKTModel">parseLASIntoXKTModel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseMetaModelIntoXKTModel">parseMetaModelIntoXKTModel</a></span></span></li>
@@ -133,7 +134,7 @@ function parseCityJSONIntoXKTModel({data, xktModel, stats = {}, log}) {
         }
 
         const vertices = data.transform // Avoid side effects - don&apos;t modify the CityJSON data
-            ? transformVertices(data.vertices, data.transform, rotateX)
+            ? transformVertices(data.vertices, data.transform)
             : data.vertices;
 
         stats.sourceFormat = data.type || &quot;&quot;;
@@ -184,17 +185,13 @@ function parseCityJSONIntoXKTModel({data, xktModel, stats = {}, log}) {
 
         ctx.log(&quot;Converting &quot; + ctx.xktModel.schema);
 
-        if (rotateX) {
-            ctx.log(&quot;Rotating model 90 degrees about X-axis&quot;);
-        }
-
         parseCityJSON(ctx);
 
         resolve();
     });
 }
 
-function transformVertices(vertices, transform, rotateX) {
+function transformVertices(vertices, transform) {
     const transformedVertices = [];
     const scale = transform.scale || math.vec3([1, 1, 1]);
     const translate = transform.translate || math.vec3([0, 0, 0]);
@@ -202,11 +199,7 @@ function transformVertices(vertices, transform, rotateX) {
         const x = (vertices[i][0] * scale[0]) + translate[0];
         const y = (vertices[i][1] * scale[1]) + translate[1];
         const z = (vertices[i][2] * scale[2]) + translate[2];
-        if (rotateX) {
-            transformedVertices.push([x, z, y]);
-        } else {
-            transformedVertices.push([x, y, z]);
-        }
+        transformedVertices.push([x, y, z]);
     }
     return transformedVertices;
 }
